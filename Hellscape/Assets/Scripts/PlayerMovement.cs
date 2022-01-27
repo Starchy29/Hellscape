@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float maxSpeed = 5f;
+    public float acceleration = 50f;
+    public float jumpSpeed = 5;
     private Rigidbody2D body;
 
     // Start is called before the first frame update
@@ -17,13 +19,25 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(body.velocity.x <= maxSpeed && (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))) {
-            //transform.position = transform.position + new Vector3(speed * Time.deltaTime, 0, 0);
-            body.AddForce(new Vector2(50, 0));
+        // move left / right
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+            body.AddForce(new Vector2(acceleration, 0));
         }
-        //if()
         if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
-            //transform.position = transform.position + new Vector3(-speed * Time.deltaTime, 0, 0);
+            body.AddForce(new Vector2(-acceleration, 0));
+        }
+
+        // cap horizontal speed
+        if(body.velocity.x > maxSpeed) {
+            body.velocity = new Vector2(maxSpeed, body.velocity.y);
+        }
+        else if(body.velocity.x < -maxSpeed) {
+            body.velocity = new Vector2(-maxSpeed, body.velocity.y);
+        }
+
+        // jump
+        if(Input.GetKey(KeyCode.UpArrow)) {
+            body.velocity = new Vector2(body.velocity.x, jumpSpeed);
         }
     }
 }
