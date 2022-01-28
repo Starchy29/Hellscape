@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float maxSpeed = 5f;
-    public float acceleration = 50f;
+    public float maxSpeed = 1f;
+    public float acceleration = 20f;
     public float jumpSpeed = 5;
     private Rigidbody2D body;
 
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // jump
-        if(Input.GetKey(KeyCode.UpArrow)) {
+        if(Input.GetKeyDown(KeyCode.UpArrow)) {
             body.velocity = new Vector2(body.velocity.x, jumpSpeed);
         }
     }
