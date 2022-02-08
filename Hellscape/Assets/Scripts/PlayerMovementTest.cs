@@ -2,8 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+enum WallDirection
+{
+    Left = 1,
+    Right = -1
+}
+
 public class PlayerMovementTest : MonoBehaviour
 {
+    // Inspector Fields
     [SerializeField] private float maxSpeed = 15.0f;
     [SerializeField] private float acceleration = 2.0f;
     [SerializeField] private float jumpForce = 10.0f;
@@ -12,6 +19,8 @@ public class PlayerMovementTest : MonoBehaviour
     [SerializeField] private float wallJumpForce = 15.0f;
     [SerializeField] private float wallStickDuration = 0.5f;
     [SerializeField] private float gravityForce = 1.0f;
+    [SerializeField] private float pogoBounceForce = 10.0f;
+    [SerializeField] private float pogoBounceDuration = 0.2f;
     [SerializeField] private LayerMask ground; // The LayerMask necessary for the object to recognize if it is on the ground or not
 
     // Powerup booleans
@@ -23,24 +32,30 @@ public class PlayerMovementTest : MonoBehaviour
     // Powerup facilitation booleans
     private bool canDoubleJump;
     private bool canDash;
-    private bool canWallJump;
-    private bool canPogoBounce;
 
     private Rigidbody2D rb;
 
     private int moveDirection; //Will only ever be -1, 0, or 1
 
+    // Dash Fields
     private bool isDashing;
     private float dashTimer;
 
+    // Grounded fields
     private bool isGrounded;
     private Transform groundCheck;
     const float groundCheckRadius = 0.1f;
 
+    // Wall Stick/Jump fields
     private bool isOnWall;
     private Transform[] wallChecks;
-    const float wallCheckRadius = 0.1f;
+    const float wallCheckRadius = 0.2f;
+    private WallDirection wallDirection;
     private float wallStickTimer;
+
+    // Pogo Bounce fields
+    private GameObject pogoBounceTrigger;
+    private PogoBounce pogoBounceScript;
     
     // Start is called before the first frame update
     void Start()
@@ -54,6 +69,10 @@ public class PlayerMovementTest : MonoBehaviour
         wallChecks[0] = transform.Find("LeftWallCheck");
         wallChecks[1] = transform.Find("RightWallCheck");
 
+        // Set up Pogo Bounce Trigger and Script
+        pogoBounceTrigger = GameObject.Find("PogoBounceTrigger");
+        pogoBounceScript = pogoBounceTrigger.GetComponent<PogoBounce>();
+
         rb = GetComponent<Rigidbody2D>();
 
         //Set the Gravity Scale
@@ -63,12 +82,11 @@ public class PlayerMovementTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(isOnWall);
-
         CheckOnWall(); // Checks to see if the player is on a wall
         CheckGrounded(); // Checks to see if the player is grounded
         GetHorizontalInput(); //Determines the move direction (-1, 0, 1)
 
+        // Update for when the player is not in a state
         if (!isDashing && !isOnWall)
         {
             // Move either left, right, or nowhere based on the move direction
@@ -114,7 +132,16 @@ public class PlayerMovementTest : MonoBehaviour
                     isDashing = true;
                 }
             }
+
+            // Pogo Bounce Control
+            if (Input.GetKeyDown(KeyCode.LeftShift) && hasPogoBounce)
+            {
+                pogoBounceTrigger.SetActive(true);
+                pogoBounceScript.SetTimer(pogoBounceDuration);
+            }
         }
+
+        // Update for when the player is dashing
         else if (isDashing)
         {
             // Decrease the timer and ensure that there is no y velocity every frame
@@ -127,22 +154,30 @@ public class PlayerMovementTest : MonoBehaviour
                 isDashing = false;
             }
         }
-        else if (isOnWall)
+
+        // Update for when the player is stuck to a wall
+        else if (isOnWall) 
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            // If the player inputs jump, leap off of the wall
+            if (Input.GetKeyDown(KeyCode.W) && hasWallJump)
             {
-                rb.AddForce(new Vector2(wallJumpForce * moveDirection, wallJumpForce * 2), ForceMode2D.Impulse);
+                rb.velocity = new Vector2(0, 0);
+                rb.AddForce(new Vector2(wallJumpForce * (int)wallDirection, wallJumpForce), ForceMode2D.Impulse);
             }
 
+            // If the player is inputting a direction. . .
             if (moveDirection != 0)
             {
+                //. . . run the wall stick timer to unstick
                 wallStickTimer -= Time.deltaTime;
             }
             else
             {
+                // If there is no input, reset the timer
                 wallStickTimer = wallStickDuration;
             }
 
+            // If the wall stick timer runs out, release the player with force off of the wall
             if (wallStickTimer <= 0)
             {
                 rb.AddForce(new Vector2(acceleration * moveDirection, 0));
@@ -168,6 +203,14 @@ public class PlayerMovementTest : MonoBehaviour
                 isGrounded = true;
                 canDoubleJump = true;
                 canDash = true;
+
+                // If the object is on a wall, detatch it from the wall
+                if (isOnWall)
+                {
+                    isOnWall = false;
+                    rb.gravityScale = gravityForce;
+                }
+
                 return;
             }
         }
@@ -176,6 +219,9 @@ public class PlayerMovementTest : MonoBehaviour
         isGrounded = false;
     }
 
+    /// <summary>
+    ///  Updates isOnWall by checking objects with the "Wall" tag
+    /// </summary>
     private void CheckOnWall()
     {
         // Will not perform if grounded
@@ -197,8 +243,10 @@ public class PlayerMovementTest : MonoBehaviour
                 //. . . update isOnWall to be true and return
                 if (isOnWall == false)
                 {
+                    // Also change the gravity and update a few variables
                     rb.gravityScale = 0.5f;
                     wallStickTimer = wallStickDuration;
+                    wallDirection = WallDirection.Left;
                 }
                 isOnWall = true;
                 return;
@@ -212,8 +260,10 @@ public class PlayerMovementTest : MonoBehaviour
                 //. . . update isOnWall to be true and return
                 if (isOnWall == false)
                 {
+                    // Also change the gravity and update a few variables
                     rb.gravityScale = 0.5f;
                     wallStickTimer = wallStickDuration;
+                    wallDirection = WallDirection.Right;
                 }
                 isOnWall = true;
                 return;
@@ -243,5 +293,14 @@ public class PlayerMovementTest : MonoBehaviour
         {
             moveDirection += 1;
         }
+    }
+
+    /// <summary>
+    ///  Bounces the player object upwards when called
+    /// </summary>
+    public void PogoBounce()
+    {
+        rb.velocity = new Vector2(rb.velocity.x, 0);
+        rb.AddForce(new Vector2(0, pogoBounceForce), ForceMode2D.Impulse);
     }
 }
