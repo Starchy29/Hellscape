@@ -56,6 +56,9 @@ public class PlayerMovementTest : MonoBehaviour
     // Pogo Bounce fields
     private GameObject pogoBounceTrigger;
     private PogoBounce pogoBounceScript;
+
+    // respawn location
+    public Vector3 spawnPoint;
     
     // Start is called before the first frame update
     void Start()
@@ -77,6 +80,9 @@ public class PlayerMovementTest : MonoBehaviour
 
         //Set the Gravity Scale
         rb.gravityScale = gravityForce;
+
+        // set inital spawn point
+        spawnPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -302,5 +308,11 @@ public class PlayerMovementTest : MonoBehaviour
     {
         rb.velocity = new Vector2(rb.velocity.x, 0);
         rb.AddForce(new Vector2(0, pogoBounceForce), ForceMode2D.Impulse);
+    }
+
+    public void Die()
+    {
+        transform.position = spawnPoint;
+        rb.velocity = Vector2.zero;
     }
 }
