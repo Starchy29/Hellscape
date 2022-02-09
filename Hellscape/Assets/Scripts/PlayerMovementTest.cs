@@ -166,7 +166,7 @@ public class PlayerMovementTest : MonoBehaviour
             }
 
             // If the player is inputting a direction. . .
-            if (moveDirection != 0)
+            if (moveDirection == (int)wallDirection)
             {
                 //. . . run the wall stick timer to unstick
                 wallStickTimer -= Time.deltaTime;
