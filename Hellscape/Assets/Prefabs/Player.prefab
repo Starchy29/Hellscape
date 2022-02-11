@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12764f9216b583348997881b412f288b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 15
+  maxSpeed: 8
   acceleration: 2
   jumpForce: 12
   dashForce: 20
@@ -265,6 +265,8 @@ MonoBehaviour:
   hasDash: 1
   hasWallJump: 1
   hasPogoBounce: 1
+  spawnPoint: {x: 0, y: 0, z: 0}
+  keys: 0
 --- !u!1 &1941031721111806141
 GameObject:
   m_ObjectHideFlags: 0
