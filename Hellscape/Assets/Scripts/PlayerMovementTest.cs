@@ -24,10 +24,10 @@ public class PlayerMovementTest : MonoBehaviour
     [SerializeField] private LayerMask ground; // The LayerMask necessary for the object to recognize if it is on the ground or not
 
     // Powerup booleans
-    [SerializeField] private bool hasDoubleJump;
-    [SerializeField] private bool hasDash;
+    [SerializeField] public bool hasDoubleJump;
+    [SerializeField] public bool hasDash;
     [SerializeField] private bool hasWallJump;
-    [SerializeField] private bool hasPogoBounce;
+    [SerializeField] public bool hasPogoBounce;
 
     // Powerup facilitation booleans
     private bool canDoubleJump;
@@ -57,8 +57,9 @@ public class PlayerMovementTest : MonoBehaviour
     private GameObject pogoBounceTrigger;
     private PogoBounce pogoBounceScript;
 
-    // respawn location
+    // special mechanics
     public Vector3 spawnPoint;
+    public int keys = 0;
     
     // Start is called before the first frame update
     void Start()
