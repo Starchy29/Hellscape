@@ -36,7 +36,7 @@ public class PlayerMovementTest : MonoBehaviour
     private Rigidbody2D rb;
 
     private int moveDirection; //Will only ever be -1, 0, or 1
-    private int storedMoveDirection;
+    private int storedMoveDirection = 1;
 
     // Dash Fields
     private bool isDashing;
