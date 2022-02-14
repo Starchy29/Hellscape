@@ -36,6 +36,7 @@ public class PlayerMovementTest : MonoBehaviour
     private Rigidbody2D rb;
 
     private int moveDirection; //Will only ever be -1, 0, or 1
+    private int storedMoveDirection;
 
     // Dash Fields
     private bool isDashing;
@@ -129,15 +130,11 @@ public class PlayerMovementTest : MonoBehaviour
             // Dash Control
             if (Input.GetKeyDown(KeyCode.Space) && hasDash && canDash)
             {
-                // If a direction is inputted while the dash is inputted. . .
-                if (moveDirection != 0)
-                {
-                    //. . . set up horizontal dash
+                    // Set up horizontal dash
                     canDash = false;
                     dashTimer = dashDuration;
-                    rb.AddForce(new Vector2(dashForce * moveDirection, 0), ForceMode2D.Impulse);
+                    rb.AddForce(new Vector2(dashForce * storedMoveDirection, 0), ForceMode2D.Impulse);
                     isDashing = true;
-                }
             }
 
             // Pogo Bounce Control
@@ -299,6 +296,11 @@ public class PlayerMovementTest : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             moveDirection += 1;
+        }
+
+        if (moveDirection != 0)
+        {
+            storedMoveDirection = moveDirection;
         }
     }
 
