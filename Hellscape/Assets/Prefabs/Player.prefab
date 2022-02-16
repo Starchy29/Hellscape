@@ -256,6 +256,7 @@ MonoBehaviour:
   wallJumpForce: 7
   wallStickDuration: 0.1
   gravityForce: 2
+  fastFallGravityForce: 4
   pogoBounceForce: 12
   pogoBounceDuration: 0.1
   ground:
