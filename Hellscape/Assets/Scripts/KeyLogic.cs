@@ -6,7 +6,9 @@ public class KeyLogic : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject.Find("Player").GetComponent<PlayerMovementTest>().keys++;
-        Destroy(this.gameObject);
+        if(collision.gameObject.name == "Player") {
+            GameObject.Find("Player").GetComponent<PlayerMovementTest>().keys++;
+            Destroy(this.gameObject);
+        }
     }
 }

@@ -10,16 +10,18 @@ public class PickupLogic : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        PlayerMovementTest script =  GameObject.Find("Player").GetComponent<PlayerMovementTest>();
-        if(addDoubleJump) {
-            script.hasDoubleJump = true;
+        if(collision.gameObject.name == "Player") {
+            PlayerMovementTest script =  GameObject.Find("Player").GetComponent<PlayerMovementTest>();
+            if(addDoubleJump) {
+                script.hasDoubleJump = true;
+            }
+            if(addDash) {
+                script.hasDash = true;
+            }
+            if(addPogo) {
+                script.hasPogoBounce = true;
+            }
+            Destroy(this.gameObject);
         }
-        if(addDash) {
-            script.hasDash = true;
-        }
-        if(addPogo) {
-            script.hasPogoBounce = true;
-        }
-        Destroy(this.gameObject);
     }
 }
