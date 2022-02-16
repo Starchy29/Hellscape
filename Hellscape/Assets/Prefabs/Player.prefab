@@ -254,7 +254,7 @@ MonoBehaviour:
   dashForce: 20
   dashDuration: 0.2
   wallJumpForce: 7
-  wallStickDuration: 0.5
+  wallStickDuration: 0.1
   gravityForce: 2
   pogoBounceForce: 12
   pogoBounceDuration: 0.1
@@ -266,6 +266,7 @@ MonoBehaviour:
   hasWallJump: 1
   hasPogoBounce: 1
   spawnPoint: {x: 0, y: 0, z: 0}
+  hasCheckpoint: 0
   keys: 0
 --- !u!1 &1941031721111806141
 GameObject:

@@ -8,6 +8,7 @@ public class CheckpointLogic : MonoBehaviour
     {
         if(collision.gameObject.name == "Player") {
             GameObject.Find("Player").GetComponent<PlayerMovementTest>().spawnPoint = this.transform.position;
+            GameObject.Find("Player").GetComponent<PlayerMovementTest>().hasCheckpoint = true;
         }
     }
 }

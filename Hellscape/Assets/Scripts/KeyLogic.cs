@@ -8,7 +8,7 @@ public class KeyLogic : MonoBehaviour
     {
         if(collision.gameObject.name == "Player") {
             GameObject.Find("Player").GetComponent<PlayerMovementTest>().keys++;
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }

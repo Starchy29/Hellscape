@@ -7,6 +7,9 @@ public class PickupLogic : MonoBehaviour
     [SerializeField] private bool addDoubleJump;
     [SerializeField] private bool addDash;
     [SerializeField] private bool addPogo;
+    public bool AddDoubleJump {  get { return addDoubleJump; } }
+    public bool AddDash {  get { return addDash; } }
+    public bool AddPogo {  get { return addPogo; } }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,7 +24,7 @@ public class PickupLogic : MonoBehaviour
             if(addPogo) {
                 script.hasPogoBounce = true;
             }
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }

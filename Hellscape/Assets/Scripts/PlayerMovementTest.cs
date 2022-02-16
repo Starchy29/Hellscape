@@ -60,12 +60,17 @@ public class PlayerMovementTest : MonoBehaviour
 
     // special mechanics
     public Vector3 spawnPoint;
+    public bool hasCheckpoint = false;
     public int keys = 0;
+    private GameObject[] respawners;
     
     // Start is called before the first frame update
     void Start()
     {
         // Initialize necessary variables
+
+        respawners = GameObject.FindGameObjectsWithTag("Respawn");
+
         // Set up Ground Check
         groundCheck = transform.Find("GroundCheck");
 
@@ -317,5 +322,23 @@ public class PlayerMovementTest : MonoBehaviour
     {
         transform.position = spawnPoint;
         rb.velocity = Vector2.zero;
+        keys = 0;
+        foreach(GameObject respawner in respawners) {
+            respawner.SetActive(true);
+
+            // get rid of acquired abilites
+            PickupLogic pickup = respawner.GetComponent<PickupLogic>();
+            if(!hasCheckpoint && pickup != null) {
+                if(pickup.AddDash) {
+                    hasDash = false;
+                }
+                if(pickup.AddDoubleJump) {
+                    hasDoubleJump = false;
+                }
+                if(pickup.AddPogo) {
+                    hasPogoBounce = false;
+                }
+            }
+        }
     }
 }
