@@ -257,7 +257,7 @@ MonoBehaviour:
   wallStickDuration: 0.1
   gravityForce: 2
   fastFallGravityForce: 4
-  pogoBounceForce: 15
+  pogoBounceForce: 10
   pogoBounceDuration: 0.1
   ground:
     serializedVersion: 2
