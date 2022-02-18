@@ -9,7 +9,7 @@ public class LockedWallLogic : MonoBehaviour
         PlayerMovementTest player = GameObject.Find("Player").GetComponent<PlayerMovementTest>();
         if(player.keys > 0) {
             player.keys--;
-            Destroy(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }

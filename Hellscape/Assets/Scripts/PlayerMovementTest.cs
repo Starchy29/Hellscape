@@ -19,6 +19,7 @@ public class PlayerMovementTest : MonoBehaviour
     [SerializeField] private float wallJumpForce = 15.0f;
     [SerializeField] private float wallStickDuration = 0.5f;
     [SerializeField] private float gravityForce = 1.0f;
+    [SerializeField] private float fastFallGravityForce = 2.0f;
     [SerializeField] private float pogoBounceForce = 10.0f;
     [SerializeField] private float pogoBounceDuration = 0.2f;
     [SerializeField] private LayerMask ground; // The LayerMask necessary for the object to recognize if it is on the ground or not
@@ -60,12 +61,17 @@ public class PlayerMovementTest : MonoBehaviour
 
     // special mechanics
     public Vector3 spawnPoint;
+    public bool hasCheckpoint = false;
     public int keys = 0;
+    private GameObject[] respawners;
     
     // Start is called before the first frame update
     void Start()
     {
         // Initialize necessary variables
+
+        respawners = GameObject.FindGameObjectsWithTag("Respawn");
+
         // Set up Ground Check
         groundCheck = transform.Find("GroundCheck");
 
@@ -97,6 +103,12 @@ public class PlayerMovementTest : MonoBehaviour
         // Update for when the player is not in a state
         if (!isDashing && !isOnWall)
         {
+            // allow varying jump height. Might break other mechanics
+            rb.gravityScale = gravityForce; 
+            if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.W)) {
+                rb.gravityScale = fastFallGravityForce;
+            }
+
             // Move either left, right, or nowhere based on the move direction
             rb.AddForce(new Vector2(acceleration * moveDirection, 0));
 
@@ -317,5 +329,23 @@ public class PlayerMovementTest : MonoBehaviour
     {
         transform.position = spawnPoint;
         rb.velocity = Vector2.zero;
+        keys = 0;
+        foreach(GameObject respawner in respawners) {
+            respawner.SetActive(true);
+
+            // get rid of acquired abilites
+            PickupLogic pickup = respawner.GetComponent<PickupLogic>();
+            if(!hasCheckpoint && pickup != null) {
+                if(pickup.AddDash) {
+                    hasDash = false;
+                }
+                if(pickup.AddDoubleJump) {
+                    hasDoubleJump = false;
+                }
+                if(pickup.AddPogo) {
+                    hasPogoBounce = false;
+                }
+            }
+        }
     }
 }

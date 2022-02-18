@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8363668346926729403}
   m_Layer: 0
   m_Name: LockedWall
-  m_TagString: Wall
+  m_TagString: Respawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

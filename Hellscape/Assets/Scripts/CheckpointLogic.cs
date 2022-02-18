@@ -6,6 +6,9 @@ public class CheckpointLogic : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject.Find("Player").GetComponent<PlayerMovementTest>().spawnPoint = this.transform.position;
+        if(collision.gameObject.name == "Player") {
+            GameObject.Find("Player").GetComponent<PlayerMovementTest>().spawnPoint = this.transform.position;
+            GameObject.Find("Player").GetComponent<PlayerMovementTest>().hasCheckpoint = true;
+        }
     }
 }

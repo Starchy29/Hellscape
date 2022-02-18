@@ -6,6 +6,8 @@ public class SpikesLogic : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameObject.Find("Player").GetComponent<PlayerMovementTest>().Die();
+        if(collision.gameObject.name == "Player") {
+            GameObject.Find("Player").GetComponent<PlayerMovementTest>().Die();
+        }
     }
 }
