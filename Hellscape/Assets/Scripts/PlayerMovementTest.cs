@@ -105,7 +105,7 @@ public class PlayerMovementTest : MonoBehaviour
         {
             // allow varying jump height. Might break other mechanics
             rb.gravityScale = gravityForce; 
-            if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.W)) {
+            if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.LeftShift)) {
                 rb.gravityScale = fastFallGravityForce;
             }
 
