@@ -183,7 +183,7 @@ MonoBehaviour:
   jumpForce: 12
   dashForce: 20
   dashDuration: 0.2
-  wallJumpForce: 7
+  wallJumpForce: 9
   wallStickDuration: 0.1
   gravityForce: 2
   fastFallGravityForce: 4
