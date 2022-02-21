@@ -59,11 +59,12 @@ public class PlayerMovementTest : MonoBehaviour
     private GameObject pogoBounceTrigger;
     private PogoBounce pogoBounceScript;
 
-    // special mechanics
+    // Whatever Ethan had to add
     public Vector3 spawnPoint;
     public bool hasCheckpoint = false;
     public int keys = 0;
     private GameObject[] respawners;
+    private float wallJumpTimer; // time after a walljump when player cannot go back
     
     // Start is called before the first frame update
     void Start()
@@ -100,6 +101,11 @@ public class PlayerMovementTest : MonoBehaviour
         CheckGrounded(); // Checks to see if the player is grounded
         GetHorizontalInput(); //Determines the move direction (-1, 0, 1)
 
+        if(wallJumpTimer > 0)
+        {
+            wallJumpTimer -= Time.deltaTime;
+        }
+
         // Update for when the player is not in a state
         if (!isDashing && !isOnWall)
         {
@@ -110,7 +116,10 @@ public class PlayerMovementTest : MonoBehaviour
             }
 
             // Move either left, right, or nowhere based on the move direction
-            rb.AddForce(new Vector2(acceleration * moveDirection, 0));
+            if (wallJumpTimer <= 0 || moveDirection * rb.velocity.x >= 0)
+            {
+                rb.AddForce(new Vector2(acceleration * moveDirection, 0));
+            }
 
             // Horizontal Speed Capping
             if (rb.velocity.x > maxSpeed)
@@ -177,7 +186,12 @@ public class PlayerMovementTest : MonoBehaviour
             if(rb.velocity.y < 0)
             {
                 rb.gravityScale = 0.5f;
-            } else
+            } 
+            else if(Input.GetKey(KeyCode.W))
+            {
+                rb.gravityScale = gravityForce;
+            }
+            else
             {
                 rb.gravityScale = fastFallGravityForce;
             }
@@ -187,6 +201,7 @@ public class PlayerMovementTest : MonoBehaviour
             {
                 rb.velocity = new Vector2(0, 0);
                 rb.AddForce(new Vector2(wallJumpForce * (int)wallDirection, wallJumpForce), ForceMode2D.Impulse);
+                wallJumpTimer = 0.55f;
             }
 
             // If the player is inputting a direction. . .
