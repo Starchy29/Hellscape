@@ -103,10 +103,10 @@ public class PlayerMovementTest : MonoBehaviour
         // Update for when the player is not in a state
         if (!isDashing && !isOnWall)
         {
-            // allow varying jump height. Might break other mechanics
-            rb.gravityScale = gravityForce; 
-            if(rb.velocity.y > 0 && !Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.LeftShift)) {
-                rb.gravityScale = fastFallGravityForce;
+            // allow varying jump height
+            rb.gravityScale = fastFallGravityForce; 
+            if(rb.velocity.y > 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.LeftShift))) {
+                rb.gravityScale = gravityForce;
             }
 
             // Move either left, right, or nowhere based on the move direction
@@ -174,6 +174,14 @@ public class PlayerMovementTest : MonoBehaviour
         // Update for when the player is stuck to a wall
         else if (isOnWall) 
         {
+            if(rb.velocity.y < 0)
+            {
+                rb.gravityScale = 0.5f;
+            } else
+            {
+                rb.gravityScale = fastFallGravityForce;
+            }
+
             // If the player inputs jump, leap off of the wall
             if (Input.GetKeyDown(KeyCode.W) && hasWallJump)
             {

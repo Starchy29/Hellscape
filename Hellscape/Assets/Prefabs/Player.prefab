@@ -178,13 +178,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12764f9216b583348997881b412f288b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 8
+  maxSpeed: 6
   acceleration: 10
   jumpForce: 12
   dashForce: 20
   dashDuration: 0.2
-  wallJumpForce: 9
-  wallStickDuration: 0.1
+  wallJumpForce: 12
+  wallStickDuration: 0.05
   gravityForce: 2
   fastFallGravityForce: 4
   pogoBounceForce: 10
