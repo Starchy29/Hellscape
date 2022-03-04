@@ -332,7 +332,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!102 &90407774
 TextMesh:
@@ -342,7 +342,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90407772}
-  m_Text: Press W twice to Double Jump
+  m_Text: Press Up twice to Double Jump
   m_OffsetZ: 0
   m_CharacterSize: 0.25
   m_LineSpacing: 1
