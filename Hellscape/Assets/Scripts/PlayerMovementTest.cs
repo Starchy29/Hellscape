@@ -111,7 +111,7 @@ public class PlayerMovementTest : MonoBehaviour
         {
             // allow varying jump height
             rb.gravityScale = fastFallGravityForce; 
-            if(rb.velocity.y > 0 && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.LeftShift))) {
+            if(rb.velocity.y > 0 && (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.V))) {
                 rb.gravityScale = gravityForce;
             }
 
@@ -132,7 +132,7 @@ public class PlayerMovementTest : MonoBehaviour
             }
 
             // Jump Control
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 // Perform a regular jump when grounded
                 if (isGrounded)
@@ -149,7 +149,7 @@ public class PlayerMovementTest : MonoBehaviour
             }
 
             // Dash Control
-            if (Input.GetKeyDown(KeyCode.Space) && hasDash && canDash)
+            if (Input.GetKeyDown(KeyCode.C) && hasDash && canDash)
             {
                     // Set up horizontal dash
                     canDash = false;
@@ -159,7 +159,7 @@ public class PlayerMovementTest : MonoBehaviour
             }
 
             // Pogo Bounce Control
-            if (Input.GetKeyDown(KeyCode.LeftShift) && hasPogoBounce)
+            if (Input.GetKeyDown(KeyCode.V) && hasPogoBounce)
             {
                 pogoBounceTrigger.SetActive(true);
                 pogoBounceScript.SetTimer(pogoBounceDuration);
@@ -187,7 +187,7 @@ public class PlayerMovementTest : MonoBehaviour
             {
                 rb.gravityScale = 0.5f;
             } 
-            else if(Input.GetKey(KeyCode.W))
+            else if(Input.GetKey(KeyCode.UpArrow))
             {
                 rb.gravityScale = gravityForce;
             }
@@ -197,7 +197,7 @@ public class PlayerMovementTest : MonoBehaviour
             }
 
             // If the player inputs jump, leap off of the wall
-            if (Input.GetKeyDown(KeyCode.W) && hasWallJump)
+            if (Input.GetKeyDown(KeyCode.UpArrow) && hasWallJump)
             {
                 rb.velocity = new Vector2(0, 0);
                 rb.AddForce(new Vector2(wallJumpForce * (int)wallDirection, wallJumpForce), ForceMode2D.Impulse);
@@ -324,11 +324,11 @@ public class PlayerMovementTest : MonoBehaviour
     {
         moveDirection = 0;
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             moveDirection -= 1;
         }
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             moveDirection += 1;
         }
