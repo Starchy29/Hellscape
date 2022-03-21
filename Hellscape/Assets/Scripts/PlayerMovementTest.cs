@@ -39,6 +39,8 @@ public class PlayerMovementTest : MonoBehaviour
     private int moveDirection; //Will only ever be -1, 0, or 1
     private int storedMoveDirection = 1;
 
+    private bool isMoving;
+
     // Dash Fields
     private bool isDashing;
     private float dashTimer;
@@ -94,6 +96,21 @@ public class PlayerMovementTest : MonoBehaviour
         spawnPoint = transform.position;
     }
 
+    private void FixedUpdate()
+    {
+        if (isMoving)
+        {
+            rb.AddForce(new Vector2(acceleration * moveDirection, 0), ForceMode2D.Impulse);
+            //rb.velocity = new Vector2(maxSpeed * moveDirection, rb.velocity.y);
+            isMoving = false;
+        }
+        else if (isDashing)
+        {
+            //rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity = new Vector2(dashForce * storedMoveDirection, 0);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -106,8 +123,10 @@ public class PlayerMovementTest : MonoBehaviour
             wallJumpTimer -= Time.deltaTime;
         }
 
+        print(rb.velocity.x);
+
         // Update for when the player is not in a state
-        if (!isDashing && !isOnWall)
+        if (!isDashing && !isOnWall && wallJumpTimer <= 0)
         {
             // allow varying jump height
             rb.gravityScale = fastFallGravityForce; 
@@ -115,10 +134,16 @@ public class PlayerMovementTest : MonoBehaviour
                 rb.gravityScale = gravityForce;
             }
 
-            // Move either left, right, or nowhere based on the move direction
-            if (wallJumpTimer <= 0 || moveDirection * rb.velocity.x >= 0)
+            ////Move either left, right, or nowhere based on the move direction
+            //if (wallJumpTimer <= 0 && moveDirection != 0)
+            //{
+            //    isMoving = true;
+            //    //rb.AddForce(new Vector2(acceleration * moveDirection, 0));
+            //}
+
+            if (moveDirection != 0)
             {
-                rb.AddForce(new Vector2(acceleration * moveDirection, 0));
+                isMoving = true;
             }
 
             // Horizontal Speed Capping
@@ -151,11 +176,12 @@ public class PlayerMovementTest : MonoBehaviour
             // Dash Control
             if (Input.GetKeyDown(KeyCode.C) && hasDash && canDash)
             {
-                    // Set up horizontal dash
-                    canDash = false;
-                    dashTimer = dashDuration;
-                    rb.AddForce(new Vector2(dashForce * storedMoveDirection, 0), ForceMode2D.Impulse);
-                    isDashing = true;
+                // Set up horizontal dash
+                canDash = false;
+                dashTimer = dashDuration;
+                //rb.AddForce(new Vector2(dashForce * storedMoveDirection, 0), ForceMode2D.Impulse);
+                rb.velocity = new Vector2(dashForce * storedMoveDirection, 0);
+                isDashing = true;
             }
 
             // Pogo Bounce Control

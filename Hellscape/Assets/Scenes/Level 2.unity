@@ -332,7 +332,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!102 &90407774
 TextMesh:
@@ -1236,6 +1236,14 @@ PrefabInstance:
     - target: {fileID: 1941031720825979876, guid: be998416bd0a32c4982425f6e0647159, type: 3}
       propertyPath: hasDash
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941031720825979876, guid: be998416bd0a32c4982425f6e0647159, type: 3}
+      propertyPath: maxSpeed
+      value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941031720825979876, guid: be998416bd0a32c4982425f6e0647159, type: 3}
+      propertyPath: hasWallJump
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1941031720825979876, guid: be998416bd0a32c4982425f6e0647159, type: 3}
       propertyPath: hasDoubleJump
