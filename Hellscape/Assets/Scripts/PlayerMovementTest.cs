@@ -227,7 +227,7 @@ public class PlayerMovementTest : MonoBehaviour
             {
                 rb.velocity = new Vector2(0, 0);
                 rb.AddForce(new Vector2(wallJumpForce * (int)wallDirection, wallJumpForce), ForceMode2D.Impulse);
-                wallJumpTimer = 0.55f;
+                wallJumpTimer = 0.35f;
             }
 
             // If the player is inputting a direction. . .
